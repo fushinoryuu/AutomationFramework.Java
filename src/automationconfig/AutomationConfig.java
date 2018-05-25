@@ -5,28 +5,32 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
 
 public class AutomationConfig implements IAutomationConfig
 {
-	private Browser TargetBrowser;
+	@SerializedName("TargetBrowser")
+	private Browser _targetBrowser;
 
-	private OperatingSystem TargetOperatingSystem;
+	@SerializedName("TargetOperatingSystem")
+	private OperatingSystem _targetOperatingSystem;
 
-	private String HubLocation;
+	@SerializedName("HubLocation")
+	private String _hubLocation;
 
 	public Browser getBrowser()
 	{
-		return TargetBrowser;
+		return _targetBrowser;
 	}
 
 	public OperatingSystem getOS()
 	{
-		return TargetOperatingSystem;
+		return _targetOperatingSystem;
 	}
 
 	public String getHubLocation()
 	{
-		return HubLocation;
+		return _hubLocation;
 	}
 
 	public static IAutomationConfig deserealize(String fileName)
