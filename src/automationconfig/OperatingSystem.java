@@ -1,4 +1,4 @@
-package automationConfig;
+package automationconfig;
 
 public enum OperatingSystem
 {
