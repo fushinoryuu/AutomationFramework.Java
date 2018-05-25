@@ -1,13 +1,20 @@
 package automationdriver;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 import java.util.Set;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
+import automationconfig.Browser;
 import automationconfig.IAutomationConfig;
+import automationconfig.OperatingSystem;
 
 public class AutomationDriver implements IAutomationDriver
 {
@@ -18,13 +25,71 @@ public class AutomationDriver implements IAutomationDriver
 	{
 		_config = config;
 		_driver = SetupWebDriver();
-		
+
 		_driver.manage().window().maximize();
 	}
-	
+
 	private WebDriver SetupWebDriver()
 	{
-		return null;
+		DesiredCapabilities capabilities = DesiredBrowser();
+
+		capabilities.setPlatform(DesiredOperatingSystem());
+
+		URL hub = HubURL();
+
+		return new RemoteWebDriver(hub, capabilities);
+	}
+
+	private DesiredCapabilities DesiredBrowser()
+	{
+		Browser targetBrowser = _config.getBrowser();
+
+		switch (targetBrowser)
+		{
+			case Chrome:
+				return DesiredCapabilities.chrome();
+			case FireFox:
+				return DesiredCapabilities.firefox();
+			case InternetExplorer:
+				return DesiredCapabilities.internetExplorer();
+			case Edge:
+				return DesiredCapabilities.edge();
+			case Safari:
+				return DesiredCapabilities.safari();
+			default:
+				return null;
+		}
+	}
+
+	private Platform DesiredOperatingSystem()
+	{
+		OperatingSystem os = _config.getOS();
+
+		switch (os)
+		{
+			case Windows:
+				return Platform.WINDOWS;
+			case Mac:
+				return Platform.MAC;
+			case Linux:
+				return Platform.LINUX;
+			default:
+				return Platform.ANY;
+		}
+	}
+
+	private URL HubURL()
+	{
+		String location = _config.getHubLocation();
+
+		try
+		{
+			return new URL(location);
+		}
+		catch (MalformedURLException e)
+		{
+			return null;
+		}
 	}
 
 	@Override
