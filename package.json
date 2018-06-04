@@ -1,0 +1,11 @@
+{
+    "name": "automation-framework-java",
+    "version": "1.0.0",
+    "description": "A framework for Selenium automation in Java 8.",
+    "repository": {
+        "url": "https://github.com/fushinoryuu/AutomationFramework.Java",
+        "type": "git"
+    },
+    "author": "Christian Munoz",
+    "license": "MIT"
+}
