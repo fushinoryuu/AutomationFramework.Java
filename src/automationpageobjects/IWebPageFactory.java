@@ -1,8 +1,8 @@
 package automationpageobjects;
 
-public interface IWebPageFactory<T extends IWebPage>
+public interface IWebPageFactory
 {
-	T Get();
+	<T extends IWebPage> T Get(Class<T> pageClass);
 
-	T Get(long customTimeOut);
+	<T extends IWebPage> T Get(Class<T> pageClass, long customWaitInSeconds);
 }
