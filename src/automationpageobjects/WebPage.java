@@ -12,7 +12,7 @@ public abstract class WebPage implements IWebPage
 {
 	protected IAutomationDriver Driver;
 	protected WebDriverWait Wait;
-	
+
 	@Override
 	public IAutomationDriver GetDriver()
 	{
