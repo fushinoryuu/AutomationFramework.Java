@@ -2,6 +2,7 @@ package automationconfig;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.List;
 import java.util.Scanner;
 
 import com.google.gson.Gson;
@@ -15,22 +16,72 @@ public class AutomationConfig implements IAutomationConfig
 	@SerializedName("TargetOperatingSystem")
 	private OperatingSystem _targetOperatingSystem;
 
-	@SerializedName("HubLocation")
-	private String _hubLocation;
+	@SerializedName("HubLocations")
+	private List<HubLocation> _hubLocations;
 
+	@SerializedName("ActiveDriverLocation")
+	private DriverLocation _activeDriverLocation;
+
+	@SerializedName("BaseUrls")
+	private List<BaseUrl> _baseUrls;
+
+	@SerializedName("ActiveEnvironment")
+	private Environment _activeEnvironment;
+
+	@Override
 	public Browser getBrowser()
 	{
 		return _targetBrowser;
 	}
 
-	public OperatingSystem getOS()
+	@Override
+	public OperatingSystem getOperatingSystem()
 	{
 		return _targetOperatingSystem;
 	}
 
-	public String getHubLocation()
+	@Override
+	public List<HubLocation> getHubLocations()
 	{
-		return _hubLocation;
+		return _hubLocations;
+	}
+
+	@Override
+	public List<BaseUrl> getBaseUrls()
+	{
+		return _baseUrls;
+	}
+
+	@Override
+	public DriverLocation getActiveDriverLocation()
+	{
+		return _activeDriverLocation;
+	}
+
+	@Override
+	public Environment getActiveEnvironment()
+	{
+		return _activeEnvironment;
+	}
+
+	@Override
+	public String GetBaseUrl(Environment environment)
+	{
+		for (BaseUrl baseUrl : _baseUrls)
+			if (baseUrl.getEnvironmentName().equals(environment))
+				return baseUrl.getUrl();
+
+		return null;
+	}
+
+	@Override
+	public String GetDriverLocation(DriverLocation location)
+	{
+		for (HubLocation hubLocation : _hubLocations)
+			if (hubLocation.getLocation().equals(location))
+				return hubLocation.getUrl();
+
+		return null;
 	}
 
 	public static IAutomationConfig deserealize(String fileName)
