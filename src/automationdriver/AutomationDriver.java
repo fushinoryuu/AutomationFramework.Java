@@ -13,6 +13,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import automationconfig.Browser;
+import automationconfig.DriverLocation;
 import automationconfig.IAutomationConfig;
 import automationconfig.OperatingSystem;
 
@@ -31,11 +32,24 @@ public class AutomationDriver implements IAutomationDriver
 
 	private WebDriver SetupWebDriver()
 	{
+		if (_config.getActiveDriverLocation().equals(DriverLocation.LocalDriver))
+			return SetupLocalWebDriver();
+
+		return SetupRemoteWebDriver();
+	}
+
+	private WebDriver SetupLocalWebDriver()
+	{
+		return null;
+	}
+
+	private WebDriver SetupRemoteWebDriver()
+	{
 		DesiredCapabilities capabilities = DesiredBrowser();
 
 		capabilities.setPlatform(DesiredOperatingSystem());
 
-		URL hub = HubURL();
+		URL hub = SeleniumHubLocation();
 
 		return new RemoteWebDriver(hub, capabilities);
 	}
@@ -46,8 +60,6 @@ public class AutomationDriver implements IAutomationDriver
 
 		switch (targetBrowser)
 		{
-			case Chrome:
-				return DesiredCapabilities.chrome();
 			case FireFox:
 				return DesiredCapabilities.firefox();
 			case InternetExplorer:
@@ -56,14 +68,15 @@ public class AutomationDriver implements IAutomationDriver
 				return DesiredCapabilities.edge();
 			case Safari:
 				return DesiredCapabilities.safari();
+			case Chrome:
 			default:
-				return null;
+				return DesiredCapabilities.chrome();
 		}
 	}
 
 	private Platform DesiredOperatingSystem()
 	{
-		OperatingSystem os = _config.getOS();
+		OperatingSystem os = _config.getOperatingSystem();
 
 		switch (os)
 		{
@@ -73,18 +86,20 @@ public class AutomationDriver implements IAutomationDriver
 				return Platform.MAC;
 			case Linux:
 				return Platform.LINUX;
+			case Any:
 			default:
 				return Platform.ANY;
 		}
 	}
 
-	private URL HubURL()
+	private URL SeleniumHubLocation()
 	{
-		String location = _config.getHubLocation();
+		DriverLocation location = _config.getActiveDriverLocation();
+		String url = _config.GetDriverLocation(location);
 
 		try
 		{
-			return new URL(location);
+			return new URL(url);
 		}
 		catch (MalformedURLException e)
 		{
