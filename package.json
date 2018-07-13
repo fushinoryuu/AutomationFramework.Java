@@ -7,5 +7,17 @@
         "type": "git"
     },
     "author": "Christian Munoz",
-    "license": "MIT"
+    "license": "MIT",
+	"dependencies": {
+        "npm-scripts-info": "^0.3.7"
+    },
+    "scripts": {
+        "help": "npm-scripts-info",
+        "hub": "start call powershell ./selenium/HUB_LaunchSeleniumGrid.bat",
+        "node": "start call powershell ./selenium/NODE_LaunchSeleniumGrid.bat"
+    },
+    "scripts-info": {
+        "hub": "Starts a Selenium Server Hub.",
+        "node": "Starts a Selenium Server Node."
+    }
 }
