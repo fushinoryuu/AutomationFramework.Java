@@ -29,6 +29,7 @@ public class WebPageFactory implements IWebPageFactory
 
 		instance.SetDriver(_driver);
 		instance.SetWait(new WebDriverWait(_driver, 30));
+		instance.SetFactory(this);
 		instance.WaitForPageToLoad();
 
 		return instance;

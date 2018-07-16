@@ -1,5 +1,6 @@
 package automationpageobjects;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -12,38 +13,60 @@ public abstract class WebPage implements IWebPage
 {
 	protected IAutomationDriver Driver;
 	protected WebDriverWait Wait;
+	protected IWebPageFactory Factory;
+	protected List<WebElement> PageElements = new ArrayList<>();
 
-	@Override
+	public void WaitForPageToLoad() throws IndexOutOfBoundsException
+	{
+		final String errorMessage = "The 'PageElements' list is empty. You have to add all your web elemts "
+		        + "to the list that you wish to use to check if a page has loaded.";
+
+		if (PageElements.isEmpty())
+		{
+			throw new IndexOutOfBoundsException(errorMessage);
+		}
+
+		for (WebElement webElement : PageElements)
+		{
+			Wait.until(func -> webElement.isDisplayed() && webElement.isEnabled());
+		}
+	}
+
 	public IAutomationDriver GetDriver()
 	{
 		return Driver;
 	}
 
-	@Override
 	public void SetDriver(IAutomationDriver driver)
 	{
 		Driver = driver;
 	}
 
-	@Override
 	public WebDriverWait GetWait()
 	{
 		return Wait;
 	}
 
-	@Override
 	public void SetWait(WebDriverWait wait)
 	{
 		Wait = wait;
 	}
 
-	@Override
+	public IWebPageFactory GetFactory()
+	{
+		return Factory;
+	}
+
+	public void SetFactory(IWebPageFactory factory)
+	{
+		Factory = factory;
+	}
+
 	public WebElement FindElementBy(By by)
 	{
 		return Driver.findElement(by);
 	}
 
-	@Override
 	public List<WebElement> FindElementsBy(By by)
 	{
 		return Driver.findElements(by);

@@ -19,10 +19,18 @@ public interface IWebPage
 
 	void SetWait(WebDriverWait wait);
 
+	IWebPageFactory GetFactory();
+
+	void SetFactory(IWebPageFactory factory);
+
 	// Methods
-	void WaitForPageToLoad();
+	void WaitForPageToLoad() throws IndexOutOfBoundsException;
 
 	WebElement FindElementBy(By by);
 
 	List<WebElement> FindElementsBy(By by);
+
+	boolean CheckPageForText(String text);
+
+	void InitializePageSections();
 }
