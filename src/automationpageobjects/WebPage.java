@@ -71,4 +71,9 @@ public abstract class WebPage implements IWebPage
 	{
 		return Driver.findElements(by);
 	}
+
+	public boolean CheckPageForText(String text)
+	{
+		return Driver.getPageSource().contains(text);
+	}
 }
