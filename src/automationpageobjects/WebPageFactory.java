@@ -21,18 +21,13 @@ public class WebPageFactory implements IWebPageFactory
 		{
 			instance = pageClass.newInstance();
 		}
-		catch (InstantiationException | IllegalAccessException e)
+		catch (InstantiationException | IllegalAccessException exception)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			exception.printStackTrace();
+			return null;
 		}
 
-		instance.SetDriver(_driver);
-		instance.SetWait(new WebDriverWait(_driver, 30));
-		instance.SetFactory(this);
-		instance.WaitForPageToLoad();
-
-		return instance;
+		return SetValues(instance, 30);
 	}
 
 	public <T extends IWebPage> T Get(Class<T> pageClass, long customWaitInSeconds)
@@ -43,14 +38,24 @@ public class WebPageFactory implements IWebPageFactory
 		{
 			instance = pageClass.newInstance();
 		}
-		catch (InstantiationException | IllegalAccessException e)
+		catch (InstantiationException | IllegalAccessException exception)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			exception.printStackTrace();
+			return null;
 		}
 
+		return SetValues(instance, customWaitInSeconds);
+	}
+
+	private <T extends IWebPage> T SetValues(T instance, long customWaitInSeconds)
+	{
+		// Set framework values
 		instance.SetDriver(_driver);
 		instance.SetWait(new WebDriverWait(_driver, customWaitInSeconds));
+		instance.SetFactory(this);
+
+		// Make sure page is ready
+		instance.InitializePageSections();
 		instance.WaitForPageToLoad();
 
 		return instance;

@@ -18,7 +18,7 @@ public abstract class WebPage implements IWebPage
 
 	public void WaitForPageToLoad() throws IndexOutOfBoundsException
 	{
-		final String errorMessage = "The 'PageElements' list is empty. You have to add all your web elemts "
+		final String errorMessage = "The 'PageElements' list is empty. You have to add all your web elements "
 		        + "to the list that you wish to use to check if a page has loaded.";
 
 		if (PageElements.isEmpty())
